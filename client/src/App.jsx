@@ -1,11 +1,18 @@
 import React from 'react'
-
+import { BrowserRouter as Router } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger,SplitText } from 'gsap/all';
+gsap.registerPlugin(ScrollTrigger,SplitText);
+import './index.css';
+import Navbar from './components/Navbar';
 const App = () => {
   return (
-    <div className="text-center mt-10">
-      <h1 className="text-3xl font-bold text-blue-600">Freelance Marketplace</h1>
-      <p>Frontend is running!</p>
-    </div>
+    <Router>
+      <div>
+        <Navbar/>
+      </div>
+
+    </Router>
   )
 }
 
