@@ -17,7 +17,7 @@ function Navbar() {
             <Link to="/">
               <img
                 className="h-8 w-auto"
-                src="/logo.png" // Replace with your logo path
+                src="/images/logo1.png" // Replace with your logo path
                 alt="Freelance Marketplace"
               />
             </Link>

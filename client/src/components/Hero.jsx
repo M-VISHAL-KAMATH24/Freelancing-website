@@ -2,11 +2,11 @@ import React from 'react'
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/all';
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 
 
 const Hero=()=> {
-    const isMobile=useMediaQuery({maxWidth:767});
+    // const isMobile=useMediaQuery({maxWidth:767});
     useGSAP(()=>{
         const heroSplit=new SplitText('.title',{type:'chars,words'});
         const subheroSplit=new SplitText('.subheading',{type:'lines'});
@@ -48,7 +48,14 @@ const Hero=()=> {
           Welcome to our Freelance Marketplace, where clients and freelancers come together to create amazing projects. Whether you're looking to hire skilled professionals or showcase your expertise, our platform makes it easy to collaborate and succeed.
           </b>
         </p>
-       
+        <div className="hero-buttons">
+    <button  className="hero-button">Web Development</button>
+    <button  className="hero-button">Graphic Design</button>
+    <button  className="hero-button">Content Writing</button>
+    <button  className="hero-button">Digital Marketing</button>
+    <button  className="hero-button">Video Editing</button>
+  </div>
+ 
       </div>
     </div>
   );
