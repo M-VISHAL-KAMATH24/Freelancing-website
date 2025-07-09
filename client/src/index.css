@@ -3,14 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 body {
   background: #000;
   color: #fff;
-  overflow: hidden;
   font-family: 'Inter', sans-serif;
 }
 .navbar-link {
@@ -39,9 +34,145 @@ body {
   color: #60a5fa; /* Tailwind text-blue-400 */
 }
 
+/* Hero Section Video and Text Styles */
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+}
+
+.hero-heading {
+  font-size: 3rem; /* Tailwind text-5xl */
+  font-weight: 800; /* Tailwind font-extrabold */
+  color: #ffffff; /* Tailwind text-white */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.hero-subheading {
+  font-size: 1.5rem; /* Tailwind text-2xl */
+  font-weight: 600; /* Tailwind font-semibold */
+  color: #60a5fa; /* Tailwind text-blue-400 */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  margin-top: 1rem; /* Tailwind mt-4 */
+}
+
+.hero-paragraph {
+  font-size: 1.125rem; /* Tailwind text-lg */
+  color: #d1d5db; /* Tailwind text-gray-300 */
+  max-width: 600px;
+  text-align: center;
+  margin-top: 1.5rem; /* Tailwind mt-6 */
+  line-height: 1.6;
+}
+/* Hero Section Buttons */
+/* Hero Section Buttons */
+.hero-buttons {
+  display: flex;
+  gap: 1rem; /* Tailwind gap-4 */
+  justify-content: center;
+  margin-top: 2rem; /* Tailwind mt-8 */
+  flex-wrap: wrap; /* Prevents overflow on smaller screens */
+}
+
+.hero-button{
+  font-size: 0.875rem; /* Tailwind text-sm */
+  font-weight: 600; /* Tailwind font-semibold */
+  color: #ffffff; /* Tailwind text-white */
+  background-color: #2563eb; /* Tailwind bg-blue-600 */
+  padding: 0.5rem 1rem; /* Tailwind px-4 py-2 */
+  border-radius: 0.375rem; /* Tailwind rounded-md */
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out; /* Tailwind transition */
+}
+
+
+/* Hero Section Button Hover */
+.hero-button:hover {
+  background-color: #1d4ed8; /* Slight lift on hover */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Added shadow for visibility */
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Ensure smooth transition */
+}
+
+/* SubHero Section Styles */
+.subhero-container {
+  padding: 4rem 1rem; /* Tailwind py-16 px-4 */
+  background: #000206; /* Tailwind bg-gray-900 */
+  position: relative;
+  z-index: 10;
+   min-height: 100vh;
+}
+
+.subhero-heading {
+  font-size: 2.25rem; /* Tailwind text-4xl */
+  font-weight: 700; /* Tailwind font-bold */
+  color: #ffffff; /* Tailwind text-white */
+  text-align: center;
+  margin-bottom: 2rem; /* Tailwind mb-8 */
+}
+
+.subhero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem; /* Tailwind gap-6 */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.subhero-card {
+  background: #1f2937; /* Tailwind bg-gray-800 */
+  border-radius: 0.5rem; /* Tailwind rounded-lg */
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.subhero-card:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Tailwind shadow-lg effect */
+}
+
+.subhero-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.subhero-card-heading {
+  font-size: 1.25rem; /* Tailwind text-xl */
+  font-weight: 600; /* Tailwind font-semibold */
+  color: #ffffff; /* Tailwind text-white */
+  text-align: center;
+  padding: 1rem; /* Tailwind p-4 */
+}
 
 
 
-
-
-/* Generate random star positions and sizes */
