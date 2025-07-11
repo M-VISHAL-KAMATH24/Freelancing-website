@@ -3,6 +3,7 @@ const express = require('express');
   const connectDB = require('./config/db');
   const authRoutes = require('./routes/auth');
   const cors = require('cors');
+  const sellerAuthRoutes = require('./routes/sellerAuth');
 
   dotenv.config({ path: '../.env' });
 
@@ -13,7 +14,12 @@ const express = require('express');
 
   // Middleware
   app.use(express.json());
-  app.use(cors({ origin: 'http://localhost:5173' })); // Allow requests from frontend
+  app.use(cors({ origin: 'http://localhost:5173' })); 
+  
+  // Allow requests from frontend
+  // Add near the existing app.use statements
+
+app.use('/api/seller/auth', sellerAuthRoutes);
 
   // Routes
   app.use('/api/auth', authRoutes);

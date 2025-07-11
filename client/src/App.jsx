@@ -10,26 +10,32 @@ import Subhero from './components/Subhero';
 import Subhero2 from './components/Subhero2';
 import Login from './components/Login';
 import Signup from './components/Signup';
-
+import SellerSignup from './components/SellerSignup';
+import SellerLogin from './components/SellerLogin';
+import SellerDashboard from './components/SellerDashboard';
 const App = () => {
   return (
     <Router>
       <div>
         <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <Hero />
-                <Subhero />
-                <Subhero2 />
-              </>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
+        // Replace the existing Routes with this
+<Routes>
+  <Route
+    path="/"
+    element={
+      <>
+        <Hero />
+        <Subhero />
+        <Subhero2 />
+      </>
+    }
+  />
+  <Route path="/login" element={<Login />} />
+  <Route path="/signup" element={<Signup />} />
+  <Route path="/seller-signup" element={<SellerSignup />} />
+  <Route path="/seller-login" element={<SellerLogin />} />
+  <Route path="/seller-dashboard" element={<SellerDashboard />} />
+</Routes>
       </div>
     </Router>
   );

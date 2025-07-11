@@ -97,7 +97,7 @@ function Navbar() {
               Signup
             </Link>
             <Link
-              to="/become-a-seller"
+              to="/seller-signup"
               className="navbar-link"
             >
               Become a Seller
