@@ -18,12 +18,12 @@ const App = () => {
     <Router>
       <div>
         <Navbar />
-        // Replace the existing Routes with this
 <Routes>
   <Route
     path="/"
     element={
       <>
+        <Navbar />
         <Hero />
         <Subhero />
         <Subhero2 />
@@ -32,9 +32,9 @@ const App = () => {
   />
   <Route path="/login" element={<Login />} />
   <Route path="/signup" element={<Signup />} />
+   <Route path="/seller/login" element={<SellerLogin />} />
   <Route path="/seller-signup" element={<SellerSignup />} />
-  <Route path="/seller-login" element={<SellerLogin />} />
-  <Route path="/seller-dashboard" element={<SellerDashboard />} />
+  <Route path="/seller/dashboard" element={<SellerDashboard />} />
 </Routes>
       </div>
     </Router>
