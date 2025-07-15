@@ -7,7 +7,7 @@ function EditProfileModal({ sellerData, onSave, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/seller/auth/update/${sellerData._id}`, {
+      const response = await fetch(`https://freelancing-website-9k60.onrender.com/api/seller/auth/update/${sellerData._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email }),

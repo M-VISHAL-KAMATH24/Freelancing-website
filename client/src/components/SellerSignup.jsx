@@ -17,7 +17,7 @@ const SellerSignup = () => {
     setSuccess('');
     console.log('Attempting signup with:', formData);
     try {
-      const response = await fetch('https://freelancing-website-backend.onrender.com/api/seller/auth/signup', {
+      const response = await fetch('https://freelancing-website-9k60.onrender.com/api/seller/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

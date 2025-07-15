@@ -47,7 +47,7 @@ const EditProfile = ({ seller, setSeller }) => {
     if (formData.image) formDataToSend.append('image', formData.image);
 
     try {
-      const response = await fetch('http://localhost:5000/api/seller/auth/profile', {
+      const response = await fetch('https://freelancing-website-9k60.onrender.com/api/seller/auth/profile', {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formDataToSend,
