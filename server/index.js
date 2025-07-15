@@ -94,7 +94,7 @@ startServer();
 
 // Middleware
 app.use(express.json());
-app.use(cors({ origin: 'https://your-frontend.onrender.com', credentials: true })); // Update with actual frontend URL after deployment
+app.use(cors({ origin: 'https://freelancing-website-122.onrender.com', credentials: true })); // Update with actual frontend URL after deployment
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
