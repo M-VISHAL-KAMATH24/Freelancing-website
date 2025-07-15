@@ -1,3 +1,5 @@
+// 
+
 import React, { useState } from 'react';
 
 const AddService = () => {
@@ -13,7 +15,7 @@ const AddService = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
-      setFormData({ ...formData, [name]5000: files[0] });
+      setFormData({ ...formData, [name]: files[0] }); // Fixed syntax error
     } else {
       setFormData({ ...formData, [name]: value });
     }
