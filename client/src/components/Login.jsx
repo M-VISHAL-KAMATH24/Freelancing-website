@@ -10,7 +10,7 @@ function Login() {
     e.preventDefault();
     console.log('Form submitted with:', { email, password });
     try {
-      const response = await fetch('https://freelancing-website-9k60.onrender.com/api/auth/login', {
+      const response = await fetch('https://freelancing-website-12.onrender.com/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

@@ -65,7 +65,7 @@ const UserDashboard = () => {
 
     const fetchServices = async () => {
       try {
-        const response = await fetch('https://freelancing-website-9k60.onrender.com/api/seller/service');
+        const response = await fetch('https://freelancing-website-12.onrender.com/api/seller/service');
         if (response.ok) {
           const data = await response.json();
           setServices(data);

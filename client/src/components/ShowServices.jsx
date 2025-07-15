@@ -129,7 +129,7 @@ const ShowServices = () => {
               <p className="text-white">Price: ${service.price}</p>
               {service.image && (
                 <img
-                  src={`https://freelancing-website-9k60.onrender.com/uploads/${service.image}`}
+                  src={`https://freelancing-website-12.onrender.com/uploads/${service.image}`}
                   alt={service.name}
                   className="w-24 h-24 rounded object-cover mt-2 border-2 border-gray-700"
                 />

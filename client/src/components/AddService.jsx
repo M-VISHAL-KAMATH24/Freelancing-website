@@ -32,7 +32,7 @@ const AddService = () => {
     if (formData.image) formDataToSend.append('image', formData.image);
 
     try {
-      const response = await fetch('https://freelancing-website-9k60.onrender.com/api/seller/service/services', {
+      const response = await fetch('https://freelancing-website-12.onrender.com/api/seller/service/services', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formDataToSend,
