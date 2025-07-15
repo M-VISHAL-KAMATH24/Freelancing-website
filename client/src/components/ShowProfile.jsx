@@ -10,7 +10,7 @@ const ShowProfile = ({ seller }) => {
         <p className="text-white"><strong>Name:</strong> {seller.name}</p>
         {seller.image && (
           <img
-            src={`http://localhost:5000/uploads/${seller.image}`}
+            src={`https://freelancing-website-backend.onrender.com/uploads/${seller.image}`}
             alt="Profile"
             className="w-32 h-32 rounded-full my-4 object-cover border-2 border-gray-700"
           />

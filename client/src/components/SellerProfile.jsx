@@ -10,7 +10,7 @@ const SellerProfile = () => {
   useEffect(() => {
     const fetchSeller = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/seller/auth/profile/${sellerId}`, {
+        const response = await fetch(`https://freelancing-website-backend.onrender.com/api/seller/auth/profile/${sellerId}`, {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` },
         });
         if (response.ok) {

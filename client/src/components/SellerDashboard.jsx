@@ -37,7 +37,7 @@ const SellerDashboard = () => {
 
     const fetchSeller = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/seller/auth/profile', {
+        const response = await fetch('https://freelancing-website-backend.onrender.com/api/seller/auth/profile', {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         if (response.ok) {

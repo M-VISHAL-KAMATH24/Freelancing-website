@@ -13,7 +13,7 @@ const AddService = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
-      setFormData({ ...formData, [name]: files[0] });
+      setFormData({ ...formData, [name]5000: files[0] });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -30,7 +30,7 @@ const AddService = () => {
     if (formData.image) formDataToSend.append('image', formData.image);
 
     try {
-      const response = await fetch('http://localhost:5000/api/seller/service/services', {
+      const response = await fetch('https://freelancing-website-backend.onrender.com/api/seller/service/services', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formDataToSend,

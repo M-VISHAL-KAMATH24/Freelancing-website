@@ -65,7 +65,7 @@ const UserDashboard = () => {
 
     const fetchServices = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/seller/service');
+        const response = await fetch('https://freelancing-website-backend.onrender.com/api/seller/service');
         if (response.ok) {
           const data = await response.json();
           setServices(data);
