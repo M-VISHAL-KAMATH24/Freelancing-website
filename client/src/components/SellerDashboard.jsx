@@ -4,21 +4,11 @@ import EditProfile from './EditProfile';
 import ShowProfile from './ShowProfile';
 import AddService from './AddService';
 import ShowServices from './ShowServices';
-import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { SplitText } from 'gsap/all';
+
 
 const SellerDashboard = () => {
 
-  useGSAP(()=>{
-    const titlesplit=new SplitText('.title',{type:'chars,words'});
-    gsap.from(titlesplit.words,{
-      xPercent:500,
-      duration:1.8,
-      ease:'expo.out',
-      stagger:0.03
-    });
-  },[])
+  
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showAddService, setShowAddService] = useState(false);
