@@ -4,8 +4,10 @@ const connectDB = require('./config/db');
 const cors = require('cors');
 const sellerAuthRoutes = require('./routes/sellerAuth.js');
 const sellerServiceRoutes = require('./routes/sellerService.js');
-const authRoutes = require('./routes/auth.js'); // New general auth routes
+const authRoutes = require('./routes/auth.js');
 const path = require('path');
+const User = require('./models/User'); // Ensure User model is imported
+const jwt = require('jsonwebtoken');
 
 dotenv.config({ path: '../.env' });
 
@@ -31,7 +33,22 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Routes
 app.use('/api/seller/auth', sellerAuthRoutes);
 app.use('/api/seller/service', sellerServiceRoutes);
-app.use('/api/auth', authRoutes); // Add general auth routes
+app.use('/api/auth', authRoutes);
+
+// Profile Endpoint for Users
+app.get('/api/auth/profile', async (req, res) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'No token provided' });
+
+  try {
+    const decoded = jwt.verify(token, 'your_jwt_secret');
+    const user = await User.findById(decoded.id).select('-password'); // Exclude password
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
+});
 
 // Health Check
 app.get('/', (req, res) => {

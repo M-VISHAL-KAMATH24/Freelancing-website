@@ -92,4 +92,13 @@ router.delete('/services/:id', authenticateSeller, async (req, res) => {
   }
 });
 
+router.get('/', async (req, res) => {
+  try {
+    const services = await Service.find(); // Fetch all services from the database
+    res.status(200).json(services);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching services' });
+  }
+});
+
 module.exports = router;

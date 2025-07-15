@@ -13,6 +13,10 @@ import Signup from './components/Signup';
 import SellerSignup from './components/SellerSignup';
 import SellerLogin from './components/SellerLogin';
 import SellerDashboard from './components/SellerDashboard';
+import UserDashboard from './components/UserDashboard';
+import Payment from './components/Payment';
+import SellerProfile from './components/SellerProfile';
+
 const App = () => {
   return (
     <Router>
@@ -35,6 +39,9 @@ const App = () => {
    <Route path="/seller/login" element={<SellerLogin />} />
   <Route path="/seller-signup" element={<SellerSignup />} />
   <Route path="/seller/dashboard" element={<SellerDashboard />} />
+  <Route path="/user/dashboard" element={<UserDashboard />} />
+        <Route path="/payment/:serviceId" element={<Payment />} />
+        <Route path="/seller/profile/:sellerId" element={<SellerProfile />} />
 </Routes>
       </div>
     </Router>
