@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Seller = require('../models/Seller.js');
-const authenticateSeller = require('./auth.js');
+const Seller = require('../models/Seller');
+const authenticateSeller = require('../middlewares/authenticateSeller');
 const multer = require('multer');
 const path = require('path');
 
-// Multer setup for file uploads
+// Multer setup
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -23,7 +23,7 @@ router.post('/signup', async (req, res) => {
   try {
     const { email, password, name } = req.body;
     if (!email || !password || !name) {
-      return res.status(400).json({ message: 'All fields (email, password, name) are required' });
+      return res.status(400).json({ message: 'All fields are required' });
     }
     const existingSeller = await Seller.findOne({ email });
     if (existingSeller) {
@@ -44,7 +44,7 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
+      return res.status(400).json({ message: 'Email and password required' });
     }
     const seller = await Seller.findOne({ email });
     if (!seller) {
@@ -54,7 +54,7 @@ router.post('/login', async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
-    const token = jwt.sign({ id: seller._id }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ id: seller._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
   } catch (error) {
     console.error('Login error:', error);
@@ -65,15 +65,15 @@ router.post('/login', async (req, res) => {
 // Get seller profile
 router.get('/profile', authenticateSeller, async (req, res) => {
   try {
-    console.log('Fetching profile for seller ID:', req.seller.id); // Debug log
+    // req.seller.id should come from authenticateSeller middleware
     const seller = await Seller.findById(req.seller.id).select('-password');
     if (!seller) {
       return res.status(404).json({ message: 'Seller not found' });
     }
     res.json(seller);
-  } catch (error) {
-    console.error('Profile fetch error:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+  } catch (err) {
+    console.error('Error fetching seller profile:', err);
+    res.status(500).json({ message: 'Server error fetching profile' });
   }
 });
 
@@ -85,15 +85,17 @@ router.put('/profile', authenticateSeller, upload.single('image'), async (req, r
       return res.status(400).json({ message: 'No updates provided' });
     }
     const updateData = {
-      name,
-      experience: experience ? Number(experience) : undefined,
-      place,
-      averagePrice: averagePrice ? Number(averagePrice) : undefined,
-      services: services ? (Array.isArray(services) ? services : JSON.parse(services)) : undefined,
+      ...(name && { name }),
+      ...(experience && { experience: Number(experience) }),
+      ...(place && { place }),
+      ...(averagePrice && { averagePrice: Number(averagePrice) }),
+      ...(services && { services: Array.isArray(services) ? services : JSON.parse(services) }),
     };
     if (req.file) updateData.image = req.file.filename;
+
     const seller = await Seller.findByIdAndUpdate(req.seller.id, updateData, { new: true, runValidators: true });
     if (!seller) return res.status(404).json({ message: 'Seller not found' });
+
     res.json({ message: 'Profile updated', seller });
   } catch (error) {
     console.error('Profile update error:', error);
