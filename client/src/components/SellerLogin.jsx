@@ -18,17 +18,18 @@ const SellerLogin = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+        credentials: 'include', // Match backend CORS credentials
       });
       const data = await response.json();
-      if (response.ok) {
+      if (response.ok && data.token) {
         localStorage.setItem('sellerToken', data.token); // Store token
-        navigate('/seller/dashboard'); // Redirect to dashboard
+        navigate('/seller/dashboard'); // Redirect to SellerDashboard
       } else {
         setError(data.message || 'Login failed');
       }
     } catch (error) {
       setError('Error during login');
-      console.error(error);
+      console.error('Login error:', error);
     }
   };
 

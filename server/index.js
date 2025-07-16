@@ -73,14 +73,13 @@ const sellerAuthRoutes = require('./routes/sellerAuth.js');
 const sellerServiceRoutes = require('./routes/sellerService.js');
 const authRoutes = require('./routes/auth.js');
 const path = require('path');
-const User = require('./models/User'); // Ensure User model is imported
+const User = require('./models/User');
 const jwt = require('jsonwebtoken');
 
 dotenv.config({ path: '../.env' });
 
 const app = express();
 
-// Connect to MongoDB
 const startServer = async () => {
   try {
     await connectDB();
@@ -92,24 +91,36 @@ const startServer = async () => {
 };
 startServer();
 
-// Middleware
+// CORS configuration
+const allowedOrigins = [
+  'https://freelancing-website-122.onrender.com', // Current deployed frontend
+  'http://localhost:5173' // Local development
+];
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS: ' + origin));
+    }
+  },
+  credentials: true
+}));
+
 app.use(express.json());
-app.use(cors({ origin: 'https://freelancing-website-122.onrender.com', credentials: true })); // Update with actual frontend URL after deployment
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
 app.use('/api/seller/auth', sellerAuthRoutes);
 app.use('/api/seller/service', sellerServiceRoutes);
 app.use('/api/auth', authRoutes);
 
-// Profile Endpoint for Users
 app.get('/api/auth/profile', async (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'No token provided' });
 
   try {
     const decoded = jwt.verify(token, 'your_jwt_secret');
-    const user = await User.findById(decoded.id).select('-password'); // Exclude password
+    const user = await User.findById(decoded.id).select('-password');
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.status(200).json(user);
   } catch (error) {
@@ -117,12 +128,10 @@ app.get('/api/auth/profile', async (req, res) => {
   }
 });
 
-// Health Check
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Freelance Marketplace API is running' });
 });
 
-// Error Handling for Uncaught Exceptions
 process.on('uncaughtException', (error) => {
   console.error('Uncaught Exception:', error.message);
   process.exit(1);
