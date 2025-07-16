@@ -21,6 +21,7 @@ const SellerSignup = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
+        credentials: 'include', // Added to match backend CORS
       });
       console.log('Response status:', response.status);
       const data = await response.json();

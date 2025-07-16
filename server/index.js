@@ -93,7 +93,7 @@ startServer();
 
 // CORS configuration
 const allowedOrigins = [
-  'https://freelancing-website-122.onrender.com', // Current deployed frontend
+  'https://freelancing-website-122.onrender.com', // Current frontend
   'http://localhost:5173' // Local development
 ];
 app.use(cors({

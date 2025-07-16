@@ -5,10 +5,7 @@ import ShowProfile from './ShowProfile';
 import AddService from './AddService';
 import ShowServices from './ShowServices';
 
-
 const SellerDashboard = () => {
-
-  
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showAddService, setShowAddService] = useState(false);
@@ -21,6 +18,7 @@ const SellerDashboard = () => {
     const token = localStorage.getItem('sellerToken');
     console.log('Token:', token);
     if (!token) {
+      setError('No token found');
       navigate('/seller/login');
       return;
     }
@@ -30,6 +28,7 @@ const SellerDashboard = () => {
         const response = await fetch('https://freelancing-website-12.onrender.com/api/seller/auth/profile', {
           headers: { 'Authorization': `Bearer ${token}` },
         });
+        console.log('Profile response status:', response.status);
         if (response.ok) {
           const data = await response.json();
           console.log('Seller data:', data);
@@ -38,19 +37,31 @@ const SellerDashboard = () => {
         } else {
           const errorData = await response.json();
           setError(errorData.message || 'Failed to load profile');
-          navigate('/seller/login');
+          // Avoid redirecting immediately; let user see the error
         }
       } catch (error) {
         console.error('Fetch error:', error);
-        setError('Error loading profile');
-        navigate('/seller/login');
+        setError('Error loading profile. Please try again or log in.');
+        // Avoid redirecting; handle gracefully
       }
     };
     fetchSeller();
   }, [navigate]);
 
-  if (!seller && !error) return <div className="text-white">Loading...</div>;
-  if (error) return <div className="text-red-500 p-6">{error}</div>;
+  if (!seller && !error) return <div className="text-white text-center p-6">Loading...</div>;
+  if (error) return (
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-gray-800 p-6 rounded-lg shadow-lg text-center">
+        <p className="text-red-500 mb-4">{error}</p>
+        <button
+          onClick={() => navigate('/seller/login')}
+          className="py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Go to Login
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="dashboard-container">

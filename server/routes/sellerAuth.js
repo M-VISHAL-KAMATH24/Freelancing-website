@@ -22,17 +22,20 @@ const upload = multer({ storage });
 router.post('/signup', async (req, res) => {
   try {
     const { email, password, name } = req.body;
-    console.log('Received signup data:', { email, password, name });
     if (!email || !password || !name) {
-      throw new Error('Missing required fields: email, password, and name are required');
+      return res.status(400).json({ message: 'All fields (email, password, name) are required' });
+    }
+    const existingSeller = await Seller.findOne({ email });
+    if (existingSeller) {
+      return res.status(400).json({ message: 'Email already registered' });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const seller = new Seller({ email, password: hashedPassword, name });
     await seller.save();
     res.status(201).json({ message: 'Seller registered successfully' });
   } catch (error) {
-    console.error('Signup error details:', error);
-    res.status(400).json({ message: 'Error registering seller', error: error.message || 'Unknown error' });
+    console.error('Signup error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
@@ -40,32 +43,43 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
     const seller = await Seller.findOne({ email });
-    if (!seller) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!seller) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
     const isMatch = await bcrypt.compare(password, seller.password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid email or password' });
+    }
     const token = jwt.sign({ id: seller._id }, 'your_jwt_secret', { expiresIn: '1h' });
     res.json({ token });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
 // Get seller profile
 router.get('/profile', authenticateSeller, async (req, res) => {
   try {
-    const seller = await Seller.findById(req.seller.id);
-    if (!seller) return res.status(404).json({ message: 'Seller not found' });
+    console.log('Fetching profile for seller ID:', req.seller.id); // Debug log
+    const seller = await Seller.findById(req.seller.id).select('-password');
+    if (!seller) {
+      return res.status(404).json({ message: 'Seller not found' });
+    }
     res.json(seller);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error('Profile fetch error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
 // Update seller profile
 router.put('/profile', authenticateSeller, upload.single('image'), async (req, res) => {
   try {
-    console.log('Received profile update data:', req.body, 'File:', req.file);
     const { name, experience, place, averagePrice, services } = req.body;
     if (!name && !experience && !place && !averagePrice && !services && !req.file) {
       return res.status(400).json({ message: 'No updates provided' });
@@ -83,7 +97,7 @@ router.put('/profile', authenticateSeller, upload.single('image'), async (req, r
     res.json({ message: 'Profile updated', seller });
   } catch (error) {
     console.error('Profile update error:', error);
-    res.status(500).json({ message: 'Server error', error: error.message || 'Unknown error' });
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
 
