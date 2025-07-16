@@ -5,7 +5,8 @@ import ShowProfile from './ShowProfile';
 import AddService from './AddService';
 import ShowServices from './ShowServices';
 
-const SellerDashboard = () => {
+// Assuming apiUrl is passed via props or context (e.g., from App.jsx)
+const SellerDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' }) => {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showAddService, setShowAddService] = useState(false);
@@ -25,7 +26,7 @@ const SellerDashboard = () => {
 
     const fetchSeller = async () => {
       try {
-        const response = await fetch('https://freelancing-website-12.onrender.com/api/seller/auth/profile', {
+        const response = await fetch(`${apiUrl}/api/seller/auth/profile`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
         console.log('Profile response status:', response.status);
@@ -37,16 +38,14 @@ const SellerDashboard = () => {
         } else {
           const errorData = await response.json();
           setError(errorData.message || 'Failed to load profile');
-          // Avoid redirecting immediately; let user see the error
         }
       } catch (error) {
         console.error('Fetch error:', error);
         setError('Error loading profile. Please try again or log in.');
-        // Avoid redirecting; handle gracefully
       }
     };
     fetchSeller();
-  }, [navigate]);
+  }, [navigate, apiUrl]);
 
   if (!seller && !error) return <div className="text-white text-center p-6">Loading...</div>;
   if (error) return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ShowServices = () => {
+const ShowServices = ({ apiUrl = 'https://freelancing-website-12.onrender.com' }) => {
   const [services, setServices] = useState([]);
   const [error, setError] = useState('');
   const [editingService, setEditingService] = useState(null);
@@ -22,7 +22,7 @@ const ShowServices = () => {
 
       try {
         console.log('Fetching services with token:', token);
-        const response = await fetch('http://localhost:5000/api/seller/service/services', {
+        const response = await fetch(`${apiUrl}/api/seller/service/services`, {
           method: 'GET',
           headers: { 'Authorization': `Bearer ${token}` },
         });
@@ -41,7 +41,7 @@ const ShowServices = () => {
     };
 
     fetchServices();
-  }, []);
+  }, [apiUrl]);
 
   const handleEdit = (service) => {
     setEditingService(service._id);
@@ -72,7 +72,7 @@ const ShowServices = () => {
     if (editFormData.image) formDataToSend.append('image', editFormData.image);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/seller/service/services/${editingService}`, {
+      const response = await fetch(`${apiUrl}/api/seller/service/services/${editingService}`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` },
         body: formDataToSend,
@@ -96,7 +96,7 @@ const ShowServices = () => {
     if (window.confirm('Are you sure you want to delete this service?')) {
       const token = localStorage.getItem('sellerToken');
       try {
-        const response = await fetch(`http://localhost:5000/api/seller/service/services/${id}`, {
+        const response = await fetch(`${apiUrl}/api/seller/service/services/${id}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` },
         });
@@ -129,7 +129,7 @@ const ShowServices = () => {
               <p className="text-white">Price: ${service.price}</p>
               {service.image && (
                 <img
-                  src={`https://freelancing-website-12.onrender.com/uploads/${service.image}`}
+                  src={`${apiUrl}/uploads/${service.image}`}
                   alt={service.name}
                   className="w-24 h-24 rounded object-cover mt-2 border-2 border-gray-700"
                 />
