@@ -386,3 +386,14 @@ body {
     @apply text-shadow-md;
   }
 }
+@media (max-width: 640px) {
+  .dashboard-button {
+    @apply w-full min-w-0 mb-2;
+  }
+  .dashboard-section {
+    @apply p-2;
+  }
+  .pt-20 {
+    @apply pt-12;
+  }
+}
