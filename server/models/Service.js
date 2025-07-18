@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('../config/db'); // Adjusted path
 
 const serviceSchema = new mongoose.Schema({
   sellerId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Seller' },

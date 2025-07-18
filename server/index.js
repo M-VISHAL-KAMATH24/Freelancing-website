@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const User = require('./models/User');
 const Seller = require('./models/Seller');
+const Service = require('./models/Service');
 
 // Import routes
 const sellerAuthRoutes = require('./routes/sellerAuth');
@@ -82,6 +83,20 @@ const startServer = async () => {
       } catch (error) {
         console.error('Seller profile fetch error:', error);
         res.status(401).json({ message: 'Invalid or expired token' });
+      }
+    });
+
+    // Updated Endpoint to Fetch All Services (Public)
+    app.get('/api/seller/service', async (req, res) => {
+      try {
+        const services = await Service.find().select('name type price sellerId image');
+        if (!services.length) {
+          return res.status(404).json({ message: 'No services found' });
+        }
+        res.json(services);
+      } catch (error) {
+        console.error('Error fetching services:', error);
+        res.status(500).json({ message: 'Server error fetching services' });
       }
     });
 

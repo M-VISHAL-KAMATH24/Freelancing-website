@@ -28,7 +28,7 @@ const ShowProfile = ({ user }) => (
   </div>
 );
 
-const UserDashboard = () => {
+const UserDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' }) => {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState(null);
@@ -46,9 +46,10 @@ const UserDashboard = () => {
 
     const fetchUser = async () => {
       try {
-        const response = await fetch('https://freelancing-website-12.onrender.com/api/auth/profile', {
+        const response = await fetch(`${apiUrl}/api/auth/profile`, {
           headers: { 'Authorization': `Bearer ${token}` },
         });
+        console.log('User profile response status:', response.status);
         if (response.ok) {
           const data = await response.json();
           setUser(data);
@@ -58,6 +59,7 @@ const UserDashboard = () => {
           navigate('/login');
         }
       } catch (error) {
+        console.error('User profile fetch error:', error);
         setError('Error loading profile');
         navigate('/login');
       }
@@ -65,7 +67,10 @@ const UserDashboard = () => {
 
     const fetchServices = async () => {
       try {
-        const response = await fetch('https://freelancing-website-12.onrender.com/api/seller/service');
+        const response = await fetch(`${apiUrl}/api/seller/service`, {
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        console.log('Services response status:', response.status);
         if (response.ok) {
           const data = await response.json();
           setServices(data);
@@ -73,16 +78,20 @@ const UserDashboard = () => {
           setError('Failed to load services');
         }
       } catch (error) {
+        console.error('Services fetch error:', error);
         setError('Error loading services');
       }
     };
 
     fetchUser();
     fetchServices();
-  }, [navigate]);
+  }, [navigate, apiUrl]);
 
   const [filters, setFilters] = useState({ types: [], sortBy: 'priceAsc' });
   const [filteredResults, setFilteredResults] = useState([]);
+
+  // Extract unique service types from fetched services
+  const uniqueServiceTypes = [...new Set(services.map(service => service.type))].filter(type => type && type.trim() !== '');
 
   const handleFilterChange = (e) => {
     const { name, value, checked } = e.target;
@@ -98,10 +107,16 @@ const UserDashboard = () => {
 
   const handleFilterSubmit = (e) => {
     e.preventDefault();
-    const results = services
-      .filter(service => filters.types.length === 0 || filters.types.includes(service.type))
-      .sort((a, b) => filters.sortBy === 'priceAsc' ? a.price - b.price : b.price - a.price);
+    let results = [...services]; // Work with a copy to avoid mutating state directly
+    if (filters.types.length > 0) {
+      results = results.filter(service => filters.types.includes(service.type));
+    }
+    results.sort((a, b) => {
+      if (filters.sortBy === 'priceAsc') return a.price - b.price;
+      return b.price - a.price;
+    });
     setFilteredResults(results);
+    console.log('Filtered Results:', results); // Debug output
   };
 
   const handleBuy = (serviceId) => {
@@ -146,7 +161,7 @@ const UserDashboard = () => {
           <form onSubmit={handleFilterSubmit} className="flex flex-col md:flex-row gap-6">
             <div className="flex-1">
               <h4 className="mb-2">Service Type</h4>
-              {['Web Development', 'Design', 'Marketing', 'Writing', 'Programming', 'Graphic Design'].map(type => (
+              {uniqueServiceTypes.map(type => (
                 <label key={type} className="block mb-2">
                   <input
                     type="checkbox"
@@ -184,7 +199,7 @@ const UserDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {(filteredResults.length > 0 ? filteredResults : services).map(service => (
             <div key={service._id} className="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-200">
-              <h4 className="text-lg font-semibold mb-2">{service.title}</h4>
+              <h4 className="text-lg font-semibold mb-2">{service.name}</h4>
               <p className="text-sm text-gray-400">Type: {service.type}</p>
               <p className="text-md font-medium">Price: ${service.price}</p>
               <div className="mt-4 flex gap-2">
