@@ -40,7 +40,7 @@ const startServer = async () => {
         }
       },
       credentials: true,
-      optionsSuccessStatus: 200, // Some legacy browsers
+      optionsSuccessStatus: 200,
     }));
 
     // Middleware
@@ -69,7 +69,7 @@ const startServer = async () => {
       }
     });
 
-    // Seller Profile Route
+    // Seller Profile Route (Authenticated)
     app.get('/api/seller/auth/profile', async (req, res) => {
       const token = req.headers.authorization?.split(' ')[1];
       if (!token) return res.status(401).json({ message: 'Token required' });
@@ -86,7 +86,19 @@ const startServer = async () => {
       }
     });
 
-    // Updated Endpoint to Fetch All Services (Public)
+    // Public Seller Profile by ID
+    app.get('/api/seller/auth/profile/:sellerId', async (req, res) => {
+      try {
+        const seller = await Seller.findById(req.params.sellerId).select('-password');
+        if (!seller) return res.status(404).json({ message: 'Seller not found' });
+        res.json(seller);
+      } catch (error) {
+        console.error('Seller profile fetch error:', error);
+        res.status(500).json({ message: 'Server error fetching seller profile' });
+      }
+    });
+
+    // Fetch All Services (Public)
     app.get('/api/seller/service', async (req, res) => {
       try {
         const services = await Service.find().select('name type price sellerId image');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Placeholder components (replace with actual if defined)
+// Placeholder components
 const EditProfile = ({ user, setUser }) => (
   <div className="mt-4 p-4 bg-gray-700 rounded">
     <h4>Edit Profile</h4>
@@ -28,7 +28,7 @@ const ShowProfile = ({ user }) => (
   </div>
 );
 
-const UserDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' }) => {
+const UserDashboard = ({ apiUrl = 'https://freelancing-website-122.onrender.com' }) => {
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [user, setUser] = useState(null);
@@ -90,7 +90,6 @@ const UserDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' 
   const [filters, setFilters] = useState({ types: [], sortBy: 'priceAsc' });
   const [filteredResults, setFilteredResults] = useState([]);
 
-  // Extract unique service types from fetched services
   const uniqueServiceTypes = [...new Set(services.map(service => service.type))].filter(type => type && type.trim() !== '');
 
   const handleFilterChange = (e) => {
@@ -107,7 +106,7 @@ const UserDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' 
 
   const handleFilterSubmit = (e) => {
     e.preventDefault();
-    let results = [...services]; // Work with a copy to avoid mutating state directly
+    let results = [...services];
     if (filters.types.length > 0) {
       results = results.filter(service => filters.types.includes(service.type));
     }
@@ -116,7 +115,7 @@ const UserDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' 
       return b.price - a.price;
     });
     setFilteredResults(results);
-    console.log('Filtered Results:', results); // Debug output
+    console.log('Filtered Results:', results);
   };
 
   const handleBuy = (serviceId) => {
@@ -124,6 +123,7 @@ const UserDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' 
   };
 
   const handleViewProfile = (sellerId) => {
+    console.log(`Navigating to seller profile with ID: ${sellerId}`);
     navigate(`/seller/profile/${sellerId}`);
   };
 
@@ -132,7 +132,6 @@ const UserDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' 
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex">
-      {/* Profile Sidebar */}
       <aside className="w-64 bg-gray-800 p-6 shadow-lg">
         <h3 className="text-xl font-bold mb-6 border-b-2 border-gray-700 pb-2">Profile</h3>
         <button
@@ -151,11 +150,9 @@ const UserDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' 
         {showProfile && <ShowProfile user={user} />}
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-6">
         <h2 className="text-3xl font-semibold mb-6">Welcome, {user.name}!</h2>
 
-        {/* Filter Section */}
         <div className="mb-8 p-4 bg-gray-800 rounded-lg shadow-md">
           <h3 className="text-lg font-semibold mb-4">Filter Services</h3>
           <form onSubmit={handleFilterSubmit} className="flex flex-col md:flex-row gap-6">
@@ -195,7 +192,6 @@ const UserDashboard = ({ apiUrl = 'https://freelancing-website-12.onrender.com' 
           </form>
         </div>
 
-        {/* Services List */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {(filteredResults.length > 0 ? filteredResults : services).map(service => (
             <div key={service._id} className="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition duration-200">
