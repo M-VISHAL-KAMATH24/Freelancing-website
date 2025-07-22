@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const SellerProfile = ({ apiUrl = 'https://freelancing-website-12.onrender.com' }) => {
+const SellerProfile = ({ apiUrl = 'https://freelancing-website-122.onrender.com' }) => {
   const { sellerId } = useParams();
   const [seller, setSeller] = useState(null);
   const [error, setError] = useState('');
@@ -47,17 +47,20 @@ const SellerProfile = ({ apiUrl = 'https://freelancing-website-12.onrender.com' 
             <p>{seller.services.join(', ')}</p>
           </div>
         )}
-        <button
-          onClick={() => navigate(-1)}
-          className="mt-4 mr-2 p-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition duration-200"
-        >
-          Back
-        </button>
-        <button
-          className="mt-4 p-2 bg-green-600 hover:bg-green-700 rounded-lg transition duration-200"
-        >
-          Chat
-        </button>
+        <div className="mt-4 flex gap-2">
+          <button
+            onClick={() => navigate(`/chat/${sellerId}`)}
+            className="flex-1 p-2 bg-green-600 hover:bg-green-700 rounded-lg transition duration-200"
+          >
+            Chat
+          </button>
+          <button
+            onClick={() => navigate(-1)}
+            className="flex-1 p-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition duration-200"
+          >
+            Back
+          </button>
+        </div>
       </div>
     </div>
   );
